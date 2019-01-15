@@ -1,6 +1,5 @@
 package com.example.demo.Cart;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,12 +40,10 @@ public class CartController {
     @PostUpdate
     @RequestMapping("/checkout")
     ResponseEntity checkOutItem(@PathVariable int cartId){
-        try{
-            cartService.checkOutItem(cartId);
+        if (cartService.checkOutItem(cartId)){
             return new ResponseEntity(SUCCESS_CHECKOUT,HttpStatus.ACCEPTED);
-        }catch (Exception e){
-            return new ResponseEntity(FAILED_TO_CHECKOUT,HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity(FAILED_TO_CHECKOUT,HttpStatus.BAD_REQUEST);
     }
 
 }

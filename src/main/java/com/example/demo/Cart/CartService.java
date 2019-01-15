@@ -43,18 +43,23 @@ public class CartService implements CartActivity{
     public boolean checkOutItem(int cartId) {
         Cart cartResult = cartRepository.fetchById(cartId);
 
-        if(!stillAvailable(cartResult)){
+        try{
+            if(!stillAvailable(cartResult)){
+                return false;
+            }
+
+            for(Item item : cartResult.getItems()){
+                Item itemResult = itemService.fetchItem(item.getItemName());
+                itemResult.decrementQuantity(item.getItemQuantity());
+                itemService.saveItem(itemResult);
+
+                cartResult.clearCart();
+                cartRepository.save(cartResult);
+            }
+        }catch (Exception e){
             return false;
         }
 
-        for(Item item : cartResult.getItems()){
-            Item itemResult = itemService.fetchItem(item.getItemName());
-            itemResult.decrementQuantity(item.getItemQuantity());
-            itemService.saveItem(itemResult);
-
-            cartResult.clearCart();
-            cartRepository.save(cartResult);
-        }
 
         return true;
     }
