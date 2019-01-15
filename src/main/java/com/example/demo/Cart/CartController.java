@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.demo.Cart.Const.Cart.FAILED_ADD_TO_CART;
-import static com.example.demo.Cart.Const.Cart.SUCCESS_ADD_TO_CART;
+import javax.persistence.PostUpdate;
+
+import static com.example.demo.Cart.Const.Cart.*;
 
 @RestController
 @RequestMapping("/cart")
@@ -15,6 +16,16 @@ public class CartController {
 
     @Autowired
     CartService cartService;
+
+    @GetMapping
+    ResponseEntity fetchCart(@PathVariable int cartId){
+        try{
+            return new ResponseEntity(cartService.fetchCart(cartId),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity(DATA_NOT_FOUND,HttpStatus.NOT_FOUND);
+        }
+    }
+
 
     @PostMapping
     ResponseEntity addToCart(@RequestBody Order order, @PathVariable int cartId){
@@ -24,7 +35,18 @@ public class CartController {
         }catch (Exception e){
             return new ResponseEntity(FAILED_ADD_TO_CART,HttpStatus.BAD_REQUEST);
         }
+    }
 
+
+    @PostUpdate
+    @RequestMapping("/checkout")
+    ResponseEntity checkOutItem(@PathVariable int cartId){
+        try{
+            cartService.checkOutItem(cartId);
+            return new ResponseEntity(SUCCESS_CHECKOUT,HttpStatus.ACCEPTED);
+        }catch (Exception e){
+            return new ResponseEntity(FAILED_TO_CHECKOUT,HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

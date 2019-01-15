@@ -8,15 +8,11 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class Cart implements Serializable {
+public class Cart{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int cartId;
-
-    @Version
-    @Column(name = "version")
-    public Integer version;
 
     @OneToMany
     private Set<Item>items;
@@ -32,14 +28,6 @@ public class Cart implements Serializable {
         this.client = client;
     }
 
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 
     public void addToCart(Item item){
         this.items.add(item);

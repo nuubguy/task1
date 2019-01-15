@@ -1,6 +1,5 @@
 package com.example.demo.User;
 
-import com.example.demo.Cart.CartRepository;
 import com.example.demo.Cart.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

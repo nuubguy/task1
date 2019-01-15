@@ -2,9 +2,10 @@ package com.example.demo.Item;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
-public class Item {
+public class Item implements Serializable {
 
     @Id
     String itemId;
@@ -21,6 +22,10 @@ public class Item {
     @NotNull
     int itemQuantity;
 
+    @Version
+    @Column(name = "version")
+    public Integer version;
+
     public Item() {
     }
 
@@ -29,6 +34,14 @@ public class Item {
         this.itemName = itemName;
         this.itemPrice = itemPrice;
         this.itemQuantity = itemQuantity;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public String getItemId() {

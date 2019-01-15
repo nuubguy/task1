@@ -15,6 +15,10 @@ public class CartService implements CartActivity{
     @Autowired
     CartRepository cartRepository;
 
+    public Cart fetchCart(int cartId){
+        return cartRepository.fetchById(cartId);
+    }
+
     public Cart createCart(Client client){
         return cartRepository.save(new Cart(client));
     }
